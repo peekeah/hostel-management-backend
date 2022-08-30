@@ -1,4 +1,15 @@
+const { restart } = require("nodemon");
 const { buildings } = require("../models/Building");
+
+exports.getBuildings = async (req, res, next) => {
+  try {
+    const response = await buildings.find({});
+    res.send(response);
+  } catch (err) {
+    console.log(err);
+    res.status(404).send(err.message);
+  }
+};
 
 exports.addBuilding = async (req, res, next) => {
   try {
@@ -8,7 +19,7 @@ exports.addBuilding = async (req, res, next) => {
     if (building) return res.send("Buiding Already Exist");
 
     const response = await new buildings({
-      ...req.body
+      ...req.body,
     });
 
     response.save();
